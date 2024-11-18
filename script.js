@@ -11,8 +11,9 @@ let already_sorted = false;
 circles.forEach((circle) => circle.addEventListener("click", clicked));
 sortear.addEventListener("click", sorteio);
 
-function clicked() {
-    if (already_sorted) return;
+function clicked(event) {
+  event.preventDefault();
+  if (already_sorted || numArr.length >= 6) return;
   numArr = [...num]; // Atualiza numArr a partir do Set num
   const numberText = this.firstChild.innerText; // Pega o número exibido no círculo
 

@@ -8,27 +8,30 @@ let num = new Set();
 let numArr = [];
 let already_sorted = false;
 
-circles.forEach((circle) => circle.addEventListener("click", clicked));
+circles.forEach((circle) => {
+  circle.addEventListener("click", clicked);
+  circle.addEventListener("touchend", clicked);
+}); // Aqui está o parêntese que faltava
+
 sortear.addEventListener("click", sorteio);
 
 function clicked(event) {
   event.preventDefault();
-  if (already_sorted || numArr.length >= 6) return;
-  numArr = [...num]; // Atualiza numArr a partir do Set num
-  const numberText = this.firstChild.innerText; // Pega o número exibido no círculo
 
-  // Se o número já foi adicionado e não ultrapassou 6 números
-  if (numArr.length < 6 && !num.has(numberText)) {
-    this.classList.add("clicked");
-    num.add(numberText); // Adiciona o número ao Set
-  }
-  // Caso contrário, se o número já estiver no Set, removemos
-  else if (num.has(numberText)) {
+  const numberText = this.firstChild.innerText; // Número do círculo
+
+  // Verifica se o número já foi selecionado
+  if (num.has(numberText)) {
+    // Remove a seleção e o número do Set
     this.classList.remove("clicked");
-    num.delete(numberText); // Remove o número do Set
+    num.delete(numberText);
+  } else if (num.size < 6) {
+    // Adiciona o número ao Set somente se ainda não houver 6 selecionados
+    this.classList.add("clicked");
+    num.add(numberText);
   }
 
-  // Atualiza numArr após a alteração no Set
+  // Atualiza o array com os valores do Set para referência
   numArr = [...num];
 }
 
